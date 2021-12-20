@@ -19,13 +19,13 @@ BoardCell[,] GetWinnerBoard(List<BoardCell[,]> boards, List<int> numberDrawSeque
         currentNumber = numberDrawSequence.First();
         boards.ForEach(board =>
         {
-            for (int verticalI = 0; verticalI < boardDimension; verticalI++)
+            for (int row = 0; row < boardDimension; row++)
             {
-                for (int horizontalI = 0; horizontalI < boardDimension; horizontalI++)
+                for (int col = 0; col < boardDimension; col++)
                 {
-                    if (board[verticalI, horizontalI].Number == currentNumber)
+                    if (board[row, col].Number == currentNumber)
                     {
-                        board[verticalI, horizontalI].IsDrawnNumber = true;
+                        board[row, col].IsDrawnNumber = true;
                     }
                 }
             }
@@ -55,11 +55,11 @@ List<BoardCell[,]> ReadBoards(string inputFilePath, int boardDimension)
     {
         var singleBoardInput = boardInput.Take(boardDimension).ToList();
         var board = new BoardCell[boardDimension, boardDimension];
-        for (int verticalI = 0; verticalI < boardDimension; verticalI++)
+        for (int row = 0; row < boardDimension; row++)
         {
-            for (int horizontalI = 0; horizontalI < boardDimension; horizontalI++)
+            for (int col = 0; col < boardDimension; col++)
             {
-                board[verticalI, horizontalI] = new BoardCell(int.Parse(singleBoardInput[verticalI][(horizontalI * 3)..(horizontalI * 3 + 2)]));
+                board[row, col] = new BoardCell(int.Parse(singleBoardInput[row][(col * 3)..(col * 3 + 2)]));
             }
         }
         boardInput.RemoveRange(0, boardDimension);
@@ -72,27 +72,27 @@ bool CheckForBingo(BoardCell[,] board)
 {
     for (int diagonalI = 0; diagonalI < boardDimension; diagonalI++)
     {
-        for (int horizontalI = 0; horizontalI < boardDimension; horizontalI++)
+        for (int col = 0; col < boardDimension; col++)
         {
-            if (!board[diagonalI, horizontalI].IsDrawnNumber)
+            if (!board[diagonalI, col].IsDrawnNumber)
             {
                 break;
             }
 
-            if (horizontalI == 4)
+            if (col == 4)
             {
                 return true;
             }
         }
 
-        for (int verticalI = 0; verticalI < boardDimension; verticalI++)
+        for (int row = 0; row < boardDimension; row++)
         {
-            if (!board[verticalI, diagonalI].IsDrawnNumber)
+            if (!board[row, diagonalI].IsDrawnNumber)
             {
                 break;
             }
 
-            if (verticalI == 4)
+            if (row == 4)
             {
                 return true;
             }
