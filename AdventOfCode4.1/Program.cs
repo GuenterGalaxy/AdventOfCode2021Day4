@@ -11,6 +11,40 @@ Console.WriteLine(notDrawnNumbers.Sum() * currentNumber.Value);
 var lastWinnerNotDrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, false)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
 Console.WriteLine(lastWinnerNotDrawnNumbers.Sum() * currentNumber.Value);
 
+List<BoardCell[,]> ReadBoards(string inputFilePath, int boardDimension)
+{
+    var boardInput = File.ReadAllLines(inputFilePath).ToList();
+    var boards = new List<BoardCell[,]>();
+
+    boardInput.RemoveAll(x => string.IsNullOrWhiteSpace(x));
+    while (boardInput.Count > 0)
+    {
+        var singleBoardInput = boardInput.Take(boardDimension).ToList();
+        var board = new BoardCell[boardDimension, boardDimension];
+        for (int row = 0; row < boardDimension; row++)
+        {
+            for (int col = 0; col < boardDimension; col++)
+            {
+                board[row, col] = new BoardCell(int.Parse(singleBoardInput[row][(col * 3)..(col * 3 + 2)]));
+            }
+        }
+        boardInput.RemoveRange(0, boardDimension);
+        boards.Add(board);
+    };
+    return boards;
+}
+
+IEnumerable<T> Flatten<T>(T[,] map)
+{
+    for (int row = 0; row < map.GetLength(0); row++)
+    {
+        for (int col = 0; col < map.GetLength(1); col++)
+        {
+            yield return map[row, col];
+        }
+    }
+}
+
 BoardCell[,] GetWinnerBoard(List<BoardCell[,]> boards, List<int> numberDrawSequence, bool getFirst)
 {
     List<BoardCell[,]> winnerBoards = null;
@@ -45,29 +79,6 @@ BoardCell[,] GetWinnerBoard(List<BoardCell[,]> boards, List<int> numberDrawSeque
     return null;
 }
 
-List<BoardCell[,]> ReadBoards(string inputFilePath, int boardDimension)
-{
-    var boardInput = File.ReadAllLines(inputFilePath).ToList();
-    var boards = new List<BoardCell[,]>();
-
-    boardInput.RemoveAll(x => string.IsNullOrWhiteSpace(x));
-    while (boardInput.Count > 0)
-    {
-        var singleBoardInput = boardInput.Take(boardDimension).ToList();
-        var board = new BoardCell[boardDimension, boardDimension];
-        for (int row = 0; row < boardDimension; row++)
-        {
-            for (int col = 0; col < boardDimension; col++)
-            {
-                board[row, col] = new BoardCell(int.Parse(singleBoardInput[row][(col * 3)..(col * 3 + 2)]));
-            }
-        }
-        boardInput.RemoveRange(0, boardDimension);
-        boards.Add(board);
-    };
-    return boards;
-}
-
 bool CheckForBingo(BoardCell[,] board)
 {
     for (int diagonal = 0; diagonal < boardDimension; diagonal++)
@@ -99,17 +110,6 @@ bool CheckForBingo(BoardCell[,] board)
         }
     }
     return false;
-}
-
-IEnumerable<T> Flatten<T>(T[,] map)
-{
-    for (int row = 0; row < map.GetLength(0); row++)
-    {
-        for (int col = 0; col < map.GetLength(1); col++)
-        {
-            yield return map[row, col];
-        }
-    }
 }
 
 public class BoardCell
