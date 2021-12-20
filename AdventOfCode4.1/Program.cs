@@ -1,11 +1,11 @@
-﻿var boards = ReadBoards(@"C:\Users\Lars_\source\repos\AdventOfCode4.1\AdventOfCode4.1\boards.txt", 5);
+﻿var boardDimension = 5;
+var boards = ReadBoards(@"C:\Users\Lars_\source\repos\AdventOfCode4.1\AdventOfCode4.1\boards.txt", boardDimension);
 var numberDrawSequence = File.ReadLines(@"C:\Users\Lars_\source\repos\AdventOfCode4.1\AdventOfCode4.1\input.txt")
     .First()
     .Split(",")
     .Select(x => int.Parse(x))
     .ToList();
 int? currentNumber = null;
-var boardDimension = 5;
 var notDrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, true)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
 Console.WriteLine(notDrawnNumbers.Sum() * currentNumber.Value);
 var lastWinnerNotDrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, false)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
