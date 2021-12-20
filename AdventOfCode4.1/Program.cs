@@ -5,6 +5,7 @@ var numberDrawSequence = File.ReadLines(@"C:\Users\Lars_\source\repos\AdventOfCo
     .Select(x => int.Parse(x))
     .ToList();
 int? currentNumber = null;
+var boardDimension = 5;
 var notDrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, true)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
 Console.WriteLine(notDrawnNumbers.Sum() * currentNumber.Value);
 var lastWinnerNotDrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, false)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
@@ -18,9 +19,9 @@ BoardCell[,] GetWinnerBoard(List<BoardCell[,]> boards, List<int> numberDrawSeque
         currentNumber = numberDrawSequence.First();
         boards.ForEach(board =>
         {
-            for (int verticalI = 0; verticalI < 5; verticalI++)
+            for (int verticalI = 0; verticalI < boardDimension; verticalI++)
             {
-                for (int horizontalI = 0; horizontalI < 5; horizontalI++)
+                for (int horizontalI = 0; horizontalI < boardDimension; horizontalI++)
                 {
                     if (board[verticalI, horizontalI].Number == currentNumber)
                     {
@@ -52,8 +53,8 @@ List<BoardCell[,]> ReadBoards(string inputFilePath, int boardDimension)
     boardInput.RemoveAll(x => string.IsNullOrWhiteSpace(x));
     while (boardInput.Count > 0)
     {
-        var singleBoardInput = boardInput.Take(5).ToList();
-        var board = new BoardCell[5, 5];
+        var singleBoardInput = boardInput.Take(boardDimension).ToList();
+        var board = new BoardCell[boardDimension, boardDimension];
         for (int verticalI = 0; verticalI < boardDimension; verticalI++)
         {
             for (int horizontalI = 0; horizontalI < boardDimension; horizontalI++)
@@ -61,7 +62,7 @@ List<BoardCell[,]> ReadBoards(string inputFilePath, int boardDimension)
                 board[verticalI, horizontalI] = new BoardCell(int.Parse(singleBoardInput[verticalI][(horizontalI * 3)..(horizontalI * 3 + 2)]));
             }
         }
-        boardInput.RemoveRange(0, 5);
+        boardInput.RemoveRange(0, boardDimension);
         boards.Add(board);
     };
     return boards;
@@ -69,9 +70,9 @@ List<BoardCell[,]> ReadBoards(string inputFilePath, int boardDimension)
 
 bool CheckForBingo(BoardCell[,] board)
 {
-    for (int diagonalI = 0; diagonalI < 5; diagonalI++)
+    for (int diagonalI = 0; diagonalI < boardDimension; diagonalI++)
     {
-        for (int horizontalI = 0; horizontalI < 5; horizontalI++)
+        for (int horizontalI = 0; horizontalI < boardDimension; horizontalI++)
         {
             if (!board[diagonalI, horizontalI].IsDrawnNumber)
             {
@@ -84,7 +85,7 @@ bool CheckForBingo(BoardCell[,] board)
             }
         }
 
-        for (int verticalI = 0; verticalI < 5; verticalI++)
+        for (int verticalI = 0; verticalI < boardDimension; verticalI++)
         {
             if (!board[verticalI, diagonalI].IsDrawnNumber)
             {
