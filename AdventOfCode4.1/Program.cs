@@ -70,11 +70,11 @@ List<BoardCell[,]> ReadBoards(string inputFilePath, int boardDimension)
 
 bool CheckForBingo(BoardCell[,] board)
 {
-    for (int diagonalI = 0; diagonalI < boardDimension; diagonalI++)
+    for (int diagonal = 0; diagonal < boardDimension; diagonal++)
     {
         for (int col = 0; col < boardDimension; col++)
         {
-            if (!board[diagonalI, col].IsDrawnNumber)
+            if (!board[diagonal, col].IsDrawnNumber)
             {
                 break;
             }
@@ -87,7 +87,7 @@ bool CheckForBingo(BoardCell[,] board)
 
         for (int row = 0; row < boardDimension; row++)
         {
-            if (!board[row, diagonalI].IsDrawnNumber)
+            if (!board[row, diagonal].IsDrawnNumber)
             {
                 break;
             }
