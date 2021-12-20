@@ -7,8 +7,8 @@ var numberDrawSequence = File.ReadLines(@"C:\Users\Lars_\source\repos\AdventOfCo
 int? currentNumber = null;
 var notDrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, true)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
 Console.WriteLine(notDrawnNumbers.Sum() * currentNumber.Value);
-var lastLoserUndrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, false)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
-Console.WriteLine(lastLoserUndrawnNumbers.Sum() * currentNumber.Value);
+var lastWinnerNotDrawnNumbers = Flatten(GetWinnerBoard(boards, numberDrawSequence, false)).Where(x => !x.IsDrawnNumber).Select(x => x.Number);
+Console.WriteLine(lastWinnerNotDrawnNumbers.Sum() * currentNumber.Value);
 
 BoardCell[,] GetWinnerBoard(List<BoardCell[,]> boards, List<int> numberDrawSequence, bool getFirst)
 {
